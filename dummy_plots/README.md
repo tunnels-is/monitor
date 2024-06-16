@@ -14,5 +14,8 @@ Week`:
 ## How to Run
 
 - Install the required libraries: numpy, matplotlib
+```sh
+pip install matplotlib numpy
+```
 - Install [jupyterlab](https://github.com/jupyterlab/jupyterlab-desktop/)
 - Voila!
