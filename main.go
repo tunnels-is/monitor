@@ -39,6 +39,19 @@ func main() {
 		return nil
 	})
 
+	// log reciver ws route
+	e.GET("/v1/json/dynamic", func(c echo.Context) error {
+		socket, err := upgrader.Upgrade(c.Response().Writer, c.Request());
+
+		if err != nil {
+			return err
+		}
+		go func() {
+			socket.ReadLoop() 
+		}()
+		return nil
+	})
+
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
