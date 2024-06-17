@@ -19,14 +19,14 @@ func main() {
 	})
 
 
-	// ws server for react
+	// ws upgrader for react
 	upgrader  := gws.NewUpgrader(&WebSocketHandler{}, &gws.ServerOption{
 		ParallelEnabled:  true,                                 
 		Recovery:          gws.Recovery,                         
 		PermessageDeflate: gws.PermessageDeflate{Enabled: true}, 
 	})
 
-	// ws server for log reciver route
+	// ws upgrader for log reciver route
 	logUpgrader := gws.NewUpgrader(&LogReceiverSocketHandler{}, &gws.ServerOption{
 		ParallelEnabled:  true,                                 
 		Recovery:          gws.Recovery,                         
