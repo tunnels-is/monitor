@@ -19,8 +19,15 @@ func main() {
 	})
 
 
-	// ws server
+	// ws server for react
 	upgrader  := gws.NewUpgrader(&WebSocketHandler{}, &gws.ServerOption{
+		ParallelEnabled:  true,                                 
+		Recovery:          gws.Recovery,                         
+		PermessageDeflate: gws.PermessageDeflate{Enabled: true}, 
+	})
+
+	// ws server for log reciver route
+	logUpgrader := gws.NewUpgrader(&LogReceiverSocketHandler{}, &gws.ServerOption{
 		ParallelEnabled:  true,                                 
 		Recovery:          gws.Recovery,                         
 		PermessageDeflate: gws.PermessageDeflate{Enabled: true}, 
@@ -41,7 +48,7 @@ func main() {
 
 	// log reciver ws route
 	e.GET("/v1/json/dynamic", func(c echo.Context) error {
-		socket, err := upgrader.Upgrade(c.Response().Writer, c.Request());
+		socket, err := logUpgrader.Upgrade(c.Response().Writer, c.Request());
 
 		if err != nil {
 			return err
