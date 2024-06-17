@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 
@@ -9,7 +11,6 @@ import (
 
 // react socket handler
 type WebSocketHandler struct{}
-
 
 func (h *WebSocketHandler) OnOpen(conn *gws.Conn) {
 	log.Println("Connection opened")
@@ -35,7 +36,6 @@ func (c *WebSocketHandler) OnPing(socket *gws.Conn, payload []byte) {
 
 func (c *WebSocketHandler) OnPong(socket *gws.Conn, payload []byte) {}
 
-
 const (
 	PingInterval = 5 * time.Second
 	PingWait     = 10 * time.Second
@@ -48,10 +48,20 @@ func (h *LogReceiverSocketHandler) OnOpen(conn *gws.Conn) {
 	log.Println("Connection opened")
 }
 
+// I WANT MAX VALUE FOR sub.key1 OVER 1 MINUTE.
 func (h *LogReceiverSocketHandler) OnMessage(conn *gws.Conn, message *gws.Message) {
-	log.Println("Received message:", string(message.Data.String()))
+	msg := make(map[string]interface{})
+	err := json.Unmarshal(message.Data.Bytes(), &msg)
 
-	err := conn.WriteMessage(gws.OpcodeText, []byte("Hello, World!"))
+	_, ok := msg["sub"]
+	if ok {
+		sub, ok := msg["sub"].(map[string]interface{})
+		if ok {
+			fmt.Println("KEY1:", sub["key1"])
+		}
+	}
+
+	err = conn.WriteMessage(gws.OpcodeText, []byte("Hello, World!"))
 	if err != nil {
 		log.Println("Write error:", err)
 	}
@@ -67,3 +77,4 @@ func (c *LogReceiverSocketHandler) OnPing(socket *gws.Conn, payload []byte) {
 }
 
 func (c *LogReceiverSocketHandler) OnPong(socket *gws.Conn, payload []byte) {}
+
