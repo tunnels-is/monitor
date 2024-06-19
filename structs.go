@@ -1,5 +1,7 @@
 package main
 
+import "sync"
+
 type SocketConfig struct {
 	Datapoints []*Vector
 }
@@ -49,3 +51,25 @@ const (
 	M30 VectorInterval = "30min"
 	HR1 VectorInterval = "1hr"
 )
+
+type ConnectedSocket struct {
+	Config     SocketConfig
+}
+
+var (
+	globalSockets = make(map[string]ConnectedSocket)
+	mutex         sync.Mutex
+)
+
+func SetConnectedSocket(key string, socket ConnectedSocket) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	globalSockets[key] = socket
+}
+
+func GetConnectedSocket(key string) (ConnectedSocket, bool) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	socket, exists := globalSockets[key]
+	return socket, exists
+}
