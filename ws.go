@@ -77,4 +77,3 @@ func (c *LogReceiverSocketHandler) OnPing(socket *gws.Conn, payload []byte) {
 }
 
 func (c *LogReceiverSocketHandler) OnPong(socket *gws.Conn, payload []byte) {}
-

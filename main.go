@@ -9,14 +9,20 @@ import (
 )
 
 func main() {
-	// web server
+	// web serverj
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.GET("/", func(c echo.Context) error {
+	wsV1 := e.Group("/v1/ws")
+	apiV1 := e.Group("/v1/api")
+
+	apiV1.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
+
+	apiV1.GET("/datacenters", ListDatacenters)
+	apiV1.GET("/datacenters/:id", FindDatacenter)
 
 	// ws upgrader for react
 	upgrader := gws.NewUpgrader(&WebSocketHandler{}, &gws.ServerOption{
@@ -33,7 +39,7 @@ func main() {
 	})
 
 	// default ws route
-	e.GET("/connect", func(c echo.Context) error {
+	wsV1.GET("/connect", func(c echo.Context) error {
 		socket, err := upgrader.Upgrade(c.Response().Writer, c.Request())
 		if err != nil {
 			return err
@@ -45,7 +51,7 @@ func main() {
 	})
 
 	// log reciver ws route
-	e.GET("/v1/json/dynamic", func(c echo.Context) error {
+	wsV1.GET("json/dynamic", func(c echo.Context) error {
 		socket, err := logUpgrader.Upgrade(c.Response().Writer, c.Request())
 		if err != nil {
 			return err
@@ -61,4 +67,3 @@ func main() {
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
-

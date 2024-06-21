@@ -52,6 +52,110 @@ const (
 	HR1 VectorInterval = "1hr"
 )
 
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+
+type Datacenter struct {
+	ID   int    `json:"ID"`
+	Tag  string `json:"Tag"`
+	Info string `json:"Info"`
+}
+
+type Row struct {
+	ID   int    `json:"ID"`
+	Tag  string `json:"Tag"`
+	Info string `json:"Info"`
+
+	DCID int `json:"DatacenterID"`
+}
+
+type Rack struct {
+	ID   int    `json:"ID"`
+	Tag  string `json:"Tag"`
+	Info string `json:"Info"`
+
+	RowID int `json:"RowID"`
+
+	TotalU       int       `json:"TotalU"`
+	BreakerLimit int       `json:"BreakerLimit"`
+	PowerType    PowerType `json:"PowerType"`
+	// PowerWarning int       `json:"BreakerWarning"`
+	// ???
+
+	// Visual
+	Color string `json:"Color"`
+}
+
+type Unit struct {
+	ID   int    `json:"ID"`
+	Info string `json:"Info"`
+	Tag  string `json:"Tag"`
+
+	RackID int `json:"RackID"`
+
+	BMC      string     `json:"BMC"`
+	SSH      string     `json:"SSH"`
+	IPs      []string   `json:"IPs"`
+	Networks []*Network `json:"Networks"`
+
+	// Visual
+	Size  int    `json:"Size"`
+	Color string `json:"Color"`
+}
+
+type Connection struct {
+	ID   int    `json:"ID"`
+	Info string `json:"Info"`
+	Tag  string `json:"Tag"`
+
+	From int `json:"From"`
+	To   int `json:"To"`
+
+	// Visual
+	Color string `json:"Color"`
+}
+
+type Network struct {
+	ID   int    `json:"ID"`
+	Info string `json:"Info"`
+	Tag  string `json:"Tag"`
+
+	CIDR string `json:"CIDR"`
+}
+
+type PowerType string
+
+const (
+	AC PowerType = "ac"
+	DC PowerType = "dc"
+)
+
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+
+
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+// DATACENTER STUFF
+
 type ConnectedSocket struct {
 	Config     SocketConfig
 }
