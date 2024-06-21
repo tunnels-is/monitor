@@ -161,19 +161,19 @@ type ConnectedSocket struct {
 }
 
 var (
-	globalSockets = make(map[string]ConnectedSocket)
+	globalSocketsM = make(map[string]*ConnectedSocket)
 	mutex         sync.Mutex
 )
 
-func SetConnectedSocket(key string, socket ConnectedSocket) {
+func SetConnectedSocket(key string, socket *ConnectedSocket) {
 	mutex.Lock()
 	defer mutex.Unlock()
-	globalSockets[key] = socket
+	globalSocketsM[key] = socket
 }
 
-func GetConnectedSocket(key string) (ConnectedSocket, bool) {
+func GetConnectedSocket(key string) (*ConnectedSocket, bool) {
 	mutex.Lock()
 	defer mutex.Unlock()
-	socket, exists := globalSockets[key]
+	socket, exists := globalSocketsM[key]
 	return socket, exists
 }
