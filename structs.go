@@ -1,5 +1,7 @@
 package main
 
+import "sync"
+
 type SocketConfig struct {
 	Datapoints []*Vector
 }
@@ -138,3 +140,26 @@ const (
 // DATACENTER STUFF
 // DATACENTER STUFF
 // DATACENTER STUFF
+
+
+type ConnectedSocket struct {
+	Config     SocketConfig
+}
+
+var (
+	globalSocketsM = make(map[string]*ConnectedSocket)
+	mutex         sync.Mutex
+)
+
+func SetConnectedSocket(key string, socket *ConnectedSocket) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	globalSocketsM[key] = socket
+}
+
+func GetConnectedSocket(key string) (*ConnectedSocket, bool) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	socket, exists := globalSocketsM[key]
+	return socket, exists
+}

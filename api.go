@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -57,4 +59,20 @@ func FindDatacenter(c echo.Context) error {
 	}
 
 	return c.JSON(200, DC)
+}
+
+func WriteErrorResponse(c echo.Context, code int, err error, msg string) error {
+	return c.JSON(code, map[string]string{"msg": msg, "error": err.Error()})
+}
+
+func UserConfigRecieveHandler(c echo.Context) error {
+	var config SocketConfig
+	if err := c.Bind(&config); err != nil {
+		return WriteErrorResponse(c, http.StatusBadRequest, err, "Invalid input")
+	}
+
+	key := "exampleKey"
+	SetConnectedSocket(key, &ConnectedSocket{Config: config})
+	fmt.Println(globalSocketsM["exampleKey"].Config.Datapoints[0].Axis)
+	return c.JSON(http.StatusOK, map[string]string{"status": "success"})
 }

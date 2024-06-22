@@ -62,5 +62,8 @@ func main() {
 		return nil
 	})
 
+	// user config
+	e.POST("/v1/user/config", UserConfigRecieveHandler); 
+
 	e.Logger.Fatal(e.Start(":1323"))
 }
