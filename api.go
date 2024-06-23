@@ -40,6 +40,36 @@ func ListDatacenters(c echo.Context) error {
 	return c.JSON(200, dataCenters)
 }
 
+func ListRows(c echo.Context) error {
+	rows := make([]*Row, 0)
+
+	var errs []error
+	action := func(path string) {
+		if !strings.Contains(path, "row_") {
+			return
+		}
+		data, err := GetObjectFullPath(path)
+		dc := new(Row)
+		err = json.Unmarshal(data, dc)
+		if err != nil {
+			errs = append(errs, err)
+			return
+		}
+		rows = append(rows, dc)
+	}
+
+	err := GetObjects(basePath, action)
+	if err != nil {
+		return c.JSON(500, err)
+	}
+
+	if len(errs) != 0 {
+		return c.JSON(500, errs)
+	}
+
+	return c.JSON(200, rows)
+}
+
 func FindDatacenter(c echo.Context) error {
 	id := c.Param("id")
 	idInt, err := strconv.Atoi(id)

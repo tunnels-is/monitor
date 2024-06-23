@@ -1,1 +1,6 @@
-{"Data":"./mdata/rows/row_0.json"}
+{
+	"Tag": "RW01",
+	"ID": 1,
+	"Info": "iron man row", 
+  "DatacenterID": 1
+}

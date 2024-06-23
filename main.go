@@ -24,6 +24,8 @@ func main() {
 	apiV1.GET("/datacenters", ListDatacenters)
 	apiV1.GET("/datacenters/:id", FindDatacenter)
 
+	apiV1.GET("/rows", ListRows)
+
 	// ws upgrader for react
 	upgrader := gws.NewUpgrader(&WebSocketHandler{}, &gws.ServerOption{
 		ParallelEnabled:   true,
@@ -63,7 +65,7 @@ func main() {
 	})
 
 	// user config
-	e.POST("/v1/user/config", UserConfigRecieveHandler); 
+	e.POST("/v1/user/config", UserConfigRecieveHandler)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
