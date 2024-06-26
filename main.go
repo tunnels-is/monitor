@@ -13,6 +13,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
 
 	wsV1 := e.Group("/v1/ws")
 	apiV1 := e.Group("/v1/api")
