@@ -25,6 +25,8 @@ func main() {
 	apiV1.GET("/datacenters/:id", FindDatacenter)
 
 	apiV1.GET("/rows", ListRows)
+	apiV1.GET("/rows/:id", FindRow)
+	apiV1.GET("/rows/datacenter/:id", ListRowsByDatacenter)
 
 	// ws upgrader for react
 	upgrader := gws.NewUpgrader(&WebSocketHandler{}, &gws.ServerOption{
