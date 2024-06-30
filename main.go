@@ -13,6 +13,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORSWithConfig(middleware.DefaultCORSConfig))
 
 	wsV1 := e.Group("/v1/ws")
 	apiV1 := e.Group("/v1/api")
@@ -23,6 +24,10 @@ func main() {
 
 	apiV1.GET("/datacenters", ListDatacenters)
 	apiV1.GET("/datacenters/:id", FindDatacenter)
+
+	apiV1.GET("/rows", ListRows)
+	apiV1.GET("/rows/:id", FindRow)
+	apiV1.GET("/rows/datacenter/:id", ListRowsByDatacenter)
 
 	// ws upgrader for react
 	upgrader := gws.NewUpgrader(&WebSocketHandler{}, &gws.ServerOption{
@@ -63,7 +68,7 @@ func main() {
 	})
 
 	// user config
-	e.POST("/v1/user/config", UserConfigRecieveHandler); 
+	e.POST("/v1/user/config", UserConfigRecieveHandler)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
